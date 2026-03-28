@@ -199,8 +199,7 @@ def get_train_args(args: Optional[Dict[str, Any]] = None) -> _TRAIN_CLS:
             raise ValueError("PPO only accepts wandb or tensorboard logger.")
 
     if training_args.parallel_mode == ParallelMode.NOT_DISTRIBUTED:
-        raise ValueError("Please launch distributed training with `llamafactory-cli` or `torchrun`.")
-
+        print("Running in single-GPU / notebook mode (Kaggle fix)")
     if training_args.deepspeed and training_args.parallel_mode != ParallelMode.DISTRIBUTED:
         raise ValueError("Please use `FORCE_TORCHRUN=1` to launch DeepSpeed training.")
 
