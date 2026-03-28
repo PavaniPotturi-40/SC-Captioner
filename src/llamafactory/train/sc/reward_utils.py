@@ -9,9 +9,18 @@ import re
 import difflib
 import io
 import contextlib
-from factual_scene_graph.evaluation.soft_spice_evaluation import encode_phrases
 import numpy as np
 
+# ✅ NEW: Replace missing encode_phrases
+from sentence_transformers import SentenceTransformer
+
+# Load model once
+_embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+def encode_phrases(model_unused, list1, list2, batch_size=4):
+    emb1 = _embedding_model.encode(list1, convert_to_numpy=True)
+    emb2 = _embedding_model.encode(list2, convert_to_numpy=True)
+    return emb1, emb2
 
 def merge_sentence_results(results, text_processor):
     # from IPython import embed; embed()
@@ -139,10 +148,9 @@ def get_revision(
     added_objects = set(added_objects_list)
     
     if stop_words:
-        from capture_metric.stop_words import stop_words_list
-        stop_words_list = set(stop_words_list)
-        from nltk.stem import WordNetLemmatizer
-        wnl = WordNetLemmatizer()
+         stop_words_list = set()   # simple fallback
+         from nltk.stem import WordNetLemmatizer
+         wnl = WordNetLemmatizer()
 
         removed_objects_cache = set()
         added_objects_cache = set()
