@@ -38,7 +38,8 @@ from typing import Any
 import torch.nn as nn
 
 from .reward_utils import *
-from capture_metric.stop_words import stop_words_list
+from nltk.corpus import stopwords
+stop_words_list = set(stopwords.words('english'))
 from sentence_transformers import SentenceTransformer
 from factual_scene_graph.parser.scene_graph_parser import SceneGraphParser
 import contextlib
